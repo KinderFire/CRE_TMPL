@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Flasky - Login{% endblock %}
+
+
+
+{% block page_content %}
+<style type="text/css">
+    .btn-primary {
+        background-color: #1ab394;
+        border-color: #1ab394;
+        color: #FFF;
+    }
+    .full-width {
+        width: 100%!important;
+    }
+    .m-b {
+        margin-bottom: 15px;
+    }
+    .b-c {
+        background-color:#bbbbbb;
+    }
+
+</style>
+
+<div class="page-header text-center">
+    <h1>Welcome To Browse</h1>
+</div>
+<div class="col-md-8">
+    <div class="ibox-content ">
+        <div class="carousel slide" id="carousel2">
+            <ol class="carousel-indicators">
+                <li data-slide-to="0" data-target="#carousel2" class=""></li>
+                <li data-slide-to="1" data-target="#carousel2" class=""></li>
+                <li data-slide-to="2" data-target="#carousel2" class="active"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="item">
+                    <img alt="image" class="img-responsive" src="http://ozwpnu2pa.bkt.clouddn.com/p_big1.jpg">
+                    <div class="carousel-caption">
+                        <p>1</p>
+                    </div>
+                </div>
+                <div class="item">
+                    <img alt="image" class="img-responsive" src="http://ozwpnu2pa.bkt.clouddn.com/p_big3.jpg">
+                    <div class="carousel-caption">
+                        <p>2</p>
+                    </div>
+                </div>
+                <div class="item active">
+                    <img alt="image" class="img-responsive" src="http://ozwpnu2pa.bkt.clouddn.com/p_big2.jpg">
+                    <div class="carousel-caption">
+                        <p>3</p>
+                    </div>
+                </div>
+            </div>
+            <a data-slide="prev" href="carousel.html#carousel2" class="left carousel-control">
+                <span class="icon-prev"></span>
+            </a>
+            <a data-slide="next" href="carousel.html#carousel2" class="right carousel-control">
+                <span class="icon-next"></span>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="col-md-4 text-center b-c">
+    <h3>欢迎使用</h3>
+</div>
+<div class="col-md-4 b-c" style="height: 300px">
+    <form action="" method="post" class="form" role="form" >
+        <div class="form-group  required"><label class="control-label" for="email">Email</label>
+            <input class="form-control" id="email" name="email" required="" type="text" value="">
+        </div>
+        <div class="form-group  required"><label class="control-label" for="password">Password</label>
+            <input class="form-control" id="password" name="password" required="" type="password" value="">
+        </div>
+        <div class="checkbox">
+            <label>
+                <input id="remember_me" name="remember_me" type="checkbox" value="y"> 记住自己的用户名
+            </label>
+        </div>
+        <input class="btn btn-primary block full-width m-b" id="submit" name="submit" type="button" value="登入">
+    </form>
+    <p class="text-muted text-center">
+        <a href="#">
+            <small>忘记密码了？</small>
+        </a>
+        |
+        <a href="#">注册一个新账号</a>
+    </p>
+</div>
+<div class="col-md-4 b-c" style="height: 55px;">
+    <label id="message" class="label-danger"></label>
+</div>
+
+<script src="{{url_for('static', filename='jquery-3.3.1.js')}}"></script>
+<script type="text/javascript">
+$(function(){
+    $('#submit').attr('class','btn btn-primary block full-width m-b');
+    $('body').attr('style','background-color: #FFFFF0;');
+
+    $('#submit').click(function(){
+        var form = $('form').serialize();
+        $.ajax({
+            url:"{{url_for('auth.login')}}",
+            type:"POST",
+            data:form,
+            dataType:'json',
+            success: function(data) {
+                if(data.status=='400'){
+                    $('#message').text(data.message);
+                } else if (data.status=='200'){
+                    window.location.href=data.view;
+                }
+            },
+            error: function() {
+                $('#message').text("登入出错，请重新登入");
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
+
